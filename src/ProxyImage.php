@@ -42,7 +42,7 @@ class ProxyImage
      */
     public function urlLocal($value, $width=null){
         $image = $this->get($value);
-        $image->widen($width);
+        //$image->widen($width);
         return url($this->folder.'transformed/');
     }
 
@@ -70,7 +70,7 @@ class ProxyImage
             if($width) $image->widen($width);
             $image->save(public_path($this->folder.'transformed/'.$name));
         }
-        $image = Image::make(public_path($value));
+        if(!isset($image)) $image = Image::make(public_path($value));
         return $image;
     }
 
