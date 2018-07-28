@@ -41,6 +41,18 @@ class ProxyImage
      * @return \Illuminate\Contracts\Routing\UrlGenerator|string
      */
     public function urlLocal($value, $width=null){
+        $image = $this->get($value);
+        $image->widen($width);
+        return url($this->folder.'transformed/');
+    }
+
+
+    /**
+     * @param $value
+     * @param null $width
+     * @return \Intervention\Image\Image
+     */
+    public function get($value, $width=null){
         $paramstrs = '';
         if($width) $paramstrs .= "w{$width}";
         $name = md5($paramstrs.$value).".png";
@@ -55,11 +67,14 @@ class ProxyImage
             }else{
                 $image = Image::make(public_path($value));
             }
-
             if($width) $image->widen($width);
             $image->save(public_path($this->folder.'transformed/'.$name));
         }
-        return url($this->folder.'transformed/'.$name);
+        $image = Image::make(public_path($value));
+        return $image;
     }
+
+
+
 
 }
