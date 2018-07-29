@@ -16,7 +16,7 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-Route::get('i-proxy', [
+Route::get('i-proxy.png', [
     'as' => 'i-proxy',
     'uses' => 'POPsy\ProxyImage\Controllers\ProxyImageController@get'
 ]);
