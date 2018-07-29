@@ -33,6 +33,8 @@ class ProxyImageServiceProvider extends ServiceProvider
             __DIR__.'/../config/config.php' => app()->basePath() . '/config/proxy-image.php',
         ], 'proxy-image');
 
+        include __DIR__.'/routes.php';
+
     }
     /**
      * Register the service provider.
