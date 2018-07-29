@@ -42,7 +42,7 @@ class ProxyImage
      */
     public function urlLocal($value, $width=null){
         $image = $this->get($value, $width);
-        $path = str_replace(public_path('\\'), '' , $image->basePath());
+        $path = str_replace([public_path(), '\\'], '' , $image->basePath());
         return url($path);
     }
 
