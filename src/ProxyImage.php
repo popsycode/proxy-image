@@ -58,9 +58,13 @@ class ProxyImage
         $name = md5($paramstrs.$value).".png";
         $name_original = md5($value).".png";
         if(!\File::exists(public_path($this->folder.'transformed/'.$name))){
-            if (filter_var($value, FILTER_VALIDATE_URL)) {
+            if ($this->validate_url($value)) {
                 if(!\File::exists(public_path($this->folder.$name_original))) {
-                    $image = Image::make($value)->save(public_path($this->folder . $name_original));
+                    try{
+                        $image = Image::make(file_get_contents($value))->save(public_path($this->folder . $name_original));
+                    }catch (\Exception $e){
+                        $image = Image::make(public_path($this->folder . "default.png"));
+                    }
                 }else{
                     $image = Image::make(public_path($this->folder . $name_original));
                 }
@@ -75,6 +79,13 @@ class ProxyImage
     }
 
 
+    private function validate_url($url) {
+        $path = parse_url($url, PHP_URL_PATH);
+        $encoded_path = array_map('urlencode', explode('/', $path));
+        $url = str_replace($path, implode('/', $encoded_path), $url);
+
+        return filter_var($url, FILTER_VALIDATE_URL) ? true : false;
+    }
 
 
 }
